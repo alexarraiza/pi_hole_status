@@ -1,48 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:pi_hole_status/data/entities/pi_hole_state.dart';
+import 'package:get/get.dart';
+import 'package:pi_hole_status/ui/main/dashboard/dashboard_controller.dart';
 
-class StatusDashboard extends StatelessWidget {
-  final PiHoleState status;
-
-  const StatusDashboard({Key key, @required this.status}) : super(key: key);
+class Dashboard extends StatelessWidget {
+  final DashboardController controller;
+  const Dashboard({
+    Key key,
+    @required this.controller,
+  })  : assert(controller != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildStatusCard(),
-        _buildHorizontalCards(
-          'Dns queries today',
-          '${status.dnsQueriesToday}',
-          'Unique clients',
-          '${status.uniqueClients}',
-        ),
-        _buildHorizontalCards(
-          'Ads blocked today',
-          '${status.adsBlockedToday}',
-          'Ads percentage today',
-          '${status.adsPercentageToday.round()}%',
-        ),
-        _buildHorizontalCards(
-          'Domains on blocklist',
-          '${status.domainsBeingBlocked}',
-          'Uptime',
-          '${status.gravityLastUpdated.relative.toString()}',
-        ),
-        _buildPrivacyCard(),
+        Obx(() => _buildStatusCard(controller.status.value)),
+        Obx(() => _buildHorizontalCards(
+              'Dns queries today',
+              '${controller.dnsQueriesToday.value}',
+              'Unique clients',
+              '${controller.uniqueClients.value}',
+            )),
+        Obx(() => _buildHorizontalCards(
+              'Ads blocked today',
+              '${controller.adsBlockedToday}',
+              'Ads percentage today',
+              '${controller.adsPercentageToday.round()}%',
+            )),
+        Obx(() => _buildHorizontalCards(
+              'Domains on blocklist',
+              '${controller.domainsBeingBlocked}',
+              'Uptime',
+              '${controller.uptime}',
+            )),
+        Obx(() => _buildPrivacyCard(controller.privacyLevel.value)),
       ],
     );
   }
 
-  Widget _buildStatusCard() {
+  Widget _buildStatusCard(String status) {
     return Card(
-      color: status.status == 'enabled' ? Colors.lightGreen.withOpacity(.6) : Colors.orange.withOpacity(.6),
+      color: status == 'enabled' ? Colors.lightGreen.withOpacity(.6) : Colors.orange.withOpacity(.6),
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            status.status,
+            status,
             style: TextStyle(fontSize: 24),
           ),
         ),
@@ -50,7 +54,7 @@ class StatusDashboard extends StatelessWidget {
     );
   }
 
-  Widget _buildPrivacyCard() {
+  Widget _buildPrivacyCard(int privacyLevel) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -63,7 +67,7 @@ class StatusDashboard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '${status.privacyLevel}',
+                '$privacyLevel',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 24,

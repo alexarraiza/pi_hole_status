@@ -16,19 +16,15 @@ class _ApiClient implements ApiClient {
   String baseUrl;
 
   @override
-  Future<PiHoleState> getState() async {
+  Future<PiHoleStatus> getState() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('/admin/api.php',
         queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
+        options: RequestOptions(method: 'GET', headers: <String, dynamic>{}, extra: _extra, baseUrl: baseUrl),
         data: _data);
-    final value = PiHoleState.fromJson(_result.data);
+    final value = PiHoleStatus.fromJson(_result.data);
     return value;
   }
 }

@@ -1,4 +1,4 @@
-class PiHoleState {
+class PiHoleStatus {
   int domainsBeingBlocked;
   int dnsQueriesToday;
   int adsBlockedToday;
@@ -17,7 +17,7 @@ class PiHoleState {
   String status;
   GravityLastUpdated gravityLastUpdated;
 
-  PiHoleState(
+  PiHoleStatus(
       {this.domainsBeingBlocked,
       this.dnsQueriesToday,
       this.adsBlockedToday,
@@ -36,25 +36,26 @@ class PiHoleState {
       this.status,
       this.gravityLastUpdated});
 
-  PiHoleState.fromJson(Map<String, dynamic> json) {
-    domainsBeingBlocked = json['domains_being_blocked'];
-    dnsQueriesToday = json['dns_queries_today'];
-    adsBlockedToday = json['ads_blocked_today'];
-    adsPercentageToday = json['ads_percentage_today'];
-    uniqueDomains = json['unique_domains'];
-    queriesForwarded = json['queries_forwarded'];
-    queriesCached = json['queries_cached'];
-    clientsEverSeen = json['clients_ever_seen'];
-    uniqueClients = json['unique_clients'];
-    dnsQueriesAllTypes = json['dns_queries_all_types'];
-    replyNODATA = json['reply_NODATA'];
-    replyNXDOMAIN = json['reply_NXDOMAIN'];
-    replyCNAME = json['reply_CNAME'];
-    replyIP = json['reply_IP'];
-    privacyLevel = json['privacy_level'];
-    status = json['status'];
-    gravityLastUpdated =
-        json['gravity_last_updated'] != null ? new GravityLastUpdated.fromJson(json['gravity_last_updated']) : null;
+  PiHoleStatus.fromJson(Map<String, dynamic> json) {
+    domainsBeingBlocked = json['domains_being_blocked'] as int;
+    dnsQueriesToday = json['dns_queries_today'] as int;
+    adsBlockedToday = json['ads_blocked_today'] as int;
+    adsPercentageToday = json['ads_percentage_today'] as double;
+    uniqueDomains = json['unique_domains'] as int;
+    queriesForwarded = json['queries_forwarded'] as int;
+    queriesCached = json['queries_cached'] as int;
+    clientsEverSeen = json['clients_ever_seen'] as int;
+    uniqueClients = json['unique_clients'] as int;
+    dnsQueriesAllTypes = json['dns_queries_all_types'] as int;
+    replyNODATA = json['reply_NODATA'] as int;
+    replyNXDOMAIN = json['reply_NXDOMAIN'] as int;
+    replyCNAME = json['reply_CNAME'] as int;
+    replyIP = json['reply_IP'] as int;
+    privacyLevel = json['privacy_level'] as int;
+    status = json['status'] as String;
+    gravityLastUpdated = json['gravity_last_updated'] != null
+        ? new GravityLastUpdated.fromJson(Map.from(json['gravity_last_updated'] as Map))
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -90,9 +91,9 @@ class GravityLastUpdated {
   GravityLastUpdated({this.fileExists, this.absolute, this.relative});
 
   GravityLastUpdated.fromJson(Map<String, dynamic> json) {
-    fileExists = json['file_exists'];
-    absolute = json['absolute'];
-    relative = json['relative'] != null ? new Relative.fromJson(json['relative']) : null;
+    fileExists = json['file_exists'] as bool;
+    absolute = json['absolute'] as int;
+    relative = json['relative'] != null ? new Relative.fromJson(Map.from(json['relative'] as Map)) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -114,9 +115,9 @@ class Relative {
   Relative({this.days, this.hours, this.minutes});
 
   Relative.fromJson(Map<String, dynamic> json) {
-    days = json['days'];
-    hours = json['hours'];
-    minutes = json['minutes'];
+    days = json['days'] as int;
+    hours = json['hours'] as int;
+    minutes = json['minutes'] as int;
   }
 
   Map<String, dynamic> toJson() {
