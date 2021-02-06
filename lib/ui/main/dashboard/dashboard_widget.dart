@@ -17,22 +17,28 @@ class Dashboard extends StatelessWidget {
       children: [
         Obx(() => _buildStatusCard(controller.status.value)),
         Obx(() => _buildHorizontalCards(
-              'Dns queries today',
+              'Total queries',
               '${controller.dnsQueriesToday.value}',
-              'Unique clients',
-              '${controller.uniqueClients.value}',
-            )),
-        Obx(() => _buildHorizontalCards(
-              'Ads blocked today',
+              Color(0xff005c33),
+              'Queries blocked',
               '${controller.adsBlockedToday}',
-              'Ads percentage today',
-              '${controller.adsPercentageToday.round()}%',
+              Color(0xff007997),
             )),
         Obx(() => _buildHorizontalCards(
+              'Percent blocked',
+              '${controller.adsPercentageToday.round()}%',
+              Color(0xffb1720d),
               'Domains on blocklist',
               '${controller.domainsBeingBlocked}',
+              Color(0xff913225),
+            )),
+        Obx(() => _buildHorizontalCards(
+              'Unique clients',
+              '${controller.uniqueClients.value}',
+              Theme.of(context).cardColor,
               'Uptime',
               '${controller.uptime}',
+              Theme.of(context).cardColor,
             )),
         Obx(() => _buildPrivacyCard(controller.privacyLevel.value)),
       ],
@@ -80,13 +86,21 @@ class Dashboard extends StatelessWidget {
     );
   }
 
-  Widget _buildHorizontalCards(String text1, String value1, String text2, String value2) {
+  Widget _buildHorizontalCards(
+    String text1,
+    String value1,
+    Color card1Color,
+    String text2,
+    String value2,
+    Color card2Color,
+  ) {
     return Flex(
       direction: Axis.horizontal,
       children: [
         Expanded(
           flex: 1,
           child: Card(
+            color: card1Color,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -113,6 +127,7 @@ class Dashboard extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Card(
+            color: card2Color,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
